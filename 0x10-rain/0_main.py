@@ -6,6 +6,9 @@ rain = __import__('0-rain').rain
 
 if __name__ == "__main__":
 
+    walls = "Cheese"
+    print(rain(walls))
+
     walls = []
     print(rain(walls))
 
@@ -13,6 +16,9 @@ if __name__ == "__main__":
     print(rain(walls))
 
     walls = [4, 0, 3, 0, 2, 0, 1, 0]
+    print(rain(walls))
+
+    walls = [0, 1, 0, 2, 0, 3, 0, 4, 0, 4, 0, 3, 0, 2, 0, 1, 0]
     print(rain(walls))
 
     walls = [2, 0, 1, 0, 2]
