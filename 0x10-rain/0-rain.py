@@ -4,21 +4,6 @@ Module for Rain Task
 """
 
 
-def check_ahead(walls, a, j):
-    """ Checks if there are greater or equal values ahead """
-    check = False
-    middle = []
-
-    while j < len(walls):
-        if a < walls[j] or a == walls[j]:
-            check = True
-            break
-        middle.append(walls[j])
-        j += 1
-
-    return check, middle, j
-
-
 def rain(walls):
     """
     Given a list of non-negative integers representing walls of width 1,
@@ -35,47 +20,24 @@ def rain(walls):
     if not walls or not isinstance(walls, list):
         return 0
 
-    i, water, middle, no_start = 0, 0, [], 0
-    a, b, idx_a, idx_b = 0, 0, 0, 0
+    l, water = len(walls), 0
+    left, right = [0] * l, [0] * l
 
-    while i < len(walls):
+    left[0], right[l - 1] = walls[0], walls[l - 1]
 
-        if walls[i] == 0:
-            if no_start:
-                middle.append(0)
-            i += 1
-            continue
+    i, j = 1, l - 2
 
-        no_start = 1
+    while True:
+        if i >= l or j <= -1:
+            break
 
-        if not a:
-            a = walls[i]
-            idx_a = i
-        else:
-            b = walls[i]
-            idx_b = i
+        left[i] = max(left[i - 1], walls[i])
+        right[j] = max(right[j + 1], walls[j])
 
-        if not a or not b:
-            i += 1
-            continue
-
-        if a < b:
-            water += a * len(middle)
-
-        else:
-            check, sub_middle, j = check_ahead(walls, a, idx_a + 1)
-
-            if not check:
-                water += b * len(middle)
-            else:
-                i, middle = j, sub_middle
-                b, idx_b = walls[i], i
-
-                c = a if a < walls[i] else walls[i]
-                water += c * len(middle) - sum(middle)
-
-        middle = []
         i += 1
-        a, b, idx_a, idx_b = b, 0, idx_b, 0
+        j -= 1
+
+    for i in range(l):
+        water += min(left[i], right[i]) - walls[i]
 
     return water
