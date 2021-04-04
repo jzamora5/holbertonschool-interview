@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Module for calculating Pascal Triangle """
 
 
 def pascal_triangle(n):
