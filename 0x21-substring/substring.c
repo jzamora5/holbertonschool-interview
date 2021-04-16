@@ -9,7 +9,8 @@
  * @nb_words: number of elements in the array words
  * @n: address at which to store the number of elements in the returned array
  *
- * Return: 1 if the pattern matches the string, or 0 if it doesn’t
+ * Return:  an allocated array, storing each index in s, at which a
+ * substring was found. If no solution is found, NULL can be returned
  */
 int *find_substring(char const *s, char const **words, int nb_words, int *n)
 {
