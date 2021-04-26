@@ -11,20 +11,15 @@ def is_prime(n):
     return True
 
 
-def play_round(n, primes):
-    """ Plays prime game round by calculating all primes """
+def calculate_primes(n, primes):
+    """ Calculate all primes """
     top_prime = primes[-1]
     if n > top_prime:
         for i in range(top_prime + 1, n + 1):
             if is_prime(i):
                 primes.append(i)
-
-    sum_options = sum(i <= n for i in primes)
-
-    if (sum_options % 2):
-        return "Maria"
-
-    return "Ben"
+            else:
+                primes.append(0)
 
 
 def isWinner(x, nums):
@@ -37,9 +32,17 @@ def isWinner(x, nums):
 
     players_wins = {"Maria": 0, "Ben": 0}
 
+    primes = [0, 0, 2]
+
+    calculate_primes(max(nums), primes)
+
     for round in range(x):
-        primes = [2]
-        winner = play_round(nums[round], primes)
+        sum_options = sum(i <= nums[round] for i in primes[:nums[round] + 1])
+
+        if (sum_options % 2):
+            winner = "Maria"
+        else:
+            winner = "Ben"
 
         if winner:
             players_wins[winner] += 1
