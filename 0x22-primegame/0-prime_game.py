@@ -4,53 +4,27 @@
 
 
 def is_prime(n):
-    """ Checks if a number is a primer number """
-
-    if n <= 1:
-        return False
-
-    flag = False
-    for i in range(2, n):
-        if (n % i) == 0:
-            flag = True
-            break
-
-    return False if flag else True
+    """ Checks if a number given n is a prime number """
+    for i in range(2, int(n ** 0.5) + 1):
+        if not n % i:
+            return False
+    return True
 
 
-def num_of_multiples_in_list(n, arr):
-    """ Counts how many multiples of n are in arr """
-    count = 0
-    for num in arr:
-        if num % n == 0:
-            count += 1
+def play_round(n, primes):
+    """ Plays prime game round by calculating all primes """
+    top_prime = primes[-1]
+    if n > top_prime:
+        for i in range(top_prime + 1, n + 1):
+            if is_prime(i):
+                primes.append(i)
 
-    return count
+    sum_options = sum(i <= n for i in primes)
 
+    if (sum_options % 2):
+        return "Maria"
 
-def best_num_option(arr):
-    """ Finds the best number to pick in prime game """
-
-    best_option = {"value": None, "multiples": 0}
-
-    for option in arr:
-        if not is_prime(option):
-            continue
-
-        n_multiples = num_of_multiples_in_list(option, arr)
-        if n_multiples > best_option["multiples"]:
-            best_option["value"] = option
-            best_option["multiples"] = n_multiples
-
-    return best_option["value"]
-
-
-def remove_multiples(n, arr):
-    """ Removes multiples of n from arr """
-    temp_list = arr[:]
-    for num in temp_list:
-        if not num % n:
-            arr.remove(num)
+    return "Ben"
 
 
 def isWinner(x, nums):
@@ -64,24 +38,11 @@ def isWinner(x, nums):
     players_wins = {"Maria": 0, "Ben": 0}
 
     for round in range(x):
-        round_nums = [i for i in range(1, nums[round] + 1)]
-        best_play, player = best_num_option(round_nums), "Maria"
-        turn = 0
+        primes = [2]
+        winner = play_round(nums[round], primes)
 
-        while(best_play):
-            player = "Maria" if not turn % 2 else "Ben"
-
-            best_play = best_num_option(round_nums)
-            if not best_play:
-                break
-
-            remove_multiples(best_play, round_nums)
-            turn += 1
-
-        if player == "Maria":
-            players_wins["Ben"] += 1
-        else:
-            players_wins["Maria"] += 1
+        if winner:
+            players_wins[winner] += 1
 
     if players_wins["Maria"] > players_wins["Ben"]:
         return "Maria"
